@@ -1,24 +1,42 @@
-name: hello world
+name: Next.js CI
+
 on:
   push:
-    branches: 
+    branches:
       - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  Run_node_app:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: check_the_code
-        uses:  actions/checkout@v3
-      - name: install Node.js
-        uses:  actions/setup-node@v3
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (version 18 or higher)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
+
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step 4: Build the Next.js app
       - name: Build Next.js App
         run: npm run build
-      - name: Running test
-        run: npm run dev
-      - name: Verify Application is Running
-        uses: curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:3000
+
+      # Step 5: Start the server in the background
+      - name: Start Next.js Server
+        run: |
+          npm run start & # Run in background
+          sleep 10        # Wait for the server to start
+
+      # Step 6: Test if the app is running on localhost:3000
+      - name: Test if app is running
+        run: curl --fail http://localhost:3000
