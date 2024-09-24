@@ -41,4 +41,4 @@ jobs:
       - name: Test if app is running
         run: curl --fail http://localhost:3000
       - name: running 
-        run: npm run dev
+        run: npm run 
