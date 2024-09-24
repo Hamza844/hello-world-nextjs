@@ -34,7 +34,7 @@ jobs:
       # Step 5: Start the server in the background
       - name: Start Next.js Server
         run: |
-          npm run start & # Run in background
+          npm run package.json & # Run in background
           sleep 10        # Wait for the server to start
 
       # Step 6: Test if the app is running on localhost:3000
