@@ -1,0 +1,23 @@
+name: hello world
+on:
+  push:
+    branches: 
+      - main
+jobs:
+  Run_node_app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check_the_code
+        uses:  actions/checkout@v3
+      - name: install Node.js
+        uses:  actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: install npm
+        uses:  npm install
+      - name: Build the project
+        run: npm run build
+      - name: Running test
+        run: npm run dev
+      - name: Verify Application is Running
+        uses: curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:3000
