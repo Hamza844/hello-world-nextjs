@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: '14'
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -39,6 +39,4 @@ jobs:
 
       # Step 6: Test if the app is running on localhost:3000
       - name: Test if app is running
-        run: curl --fail http://localhost:3000
-      - name: running 
-        run: npm run 
+        run: curl --fail http://localhost:3000 
