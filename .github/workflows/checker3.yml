@@ -1,4 +1,4 @@
-name: CI for Next.js Project
+name: Next.js CI Pipeline
 
 on:
   push:
@@ -9,38 +9,31 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x' # Explicitly use Node.js 20
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      # Step 4: Build the project
-      - name: Build Next.js application
-        run: npm run build
+    - name: Build Next.js App
+      run: npm run build
 
-      # Step 5: Start the development server
-      - name: Start Next.js application
-        run: node package.json
-      
-      # Step 6: Wait for server to start
-      - name: Wait for server
-        run: |
-          sleep 10
-          curl --retry 5 --retry-delay 5 --fail http://localhost:3000
+    - name: Start Next.js Development Server
+      run: npm run dev &
 
-      # Step 7: Run tests (if any)
-      - name: Run tests
-        run: npm test
+    - name: Wait for Server to Start
+      run: |
+        sleep 10 # Wait for the dev server to boot up
+        curl --fail http://localhost:3000 || exit 1
+
+    - name: Stop the Server
+      run: kill $(jobs -p)
