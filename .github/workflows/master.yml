@@ -1,0 +1,39 @@
+name: Next.js CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Next.js App
+      run: npm run build
+
+    - name: Start Next.js Development Server
+      run: npm run dev &
+    
+    - name: Wait for Server to Start
+      run: |
+        sleep 10 # Wait for the dev server to boot up
+        curl --fail http://localhost:3000 || exit 1
+
+    - name: Stop the Server
+      run: kill $(jobs -p)
