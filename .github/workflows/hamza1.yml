@@ -17,9 +17,9 @@ jobs:
       - name: install Node.js
         uses:  actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '14'
       - name: install npm
-        uses:  npm install
+        run:  npm install
       - name: Build the project
         run: npm run build
       - name: Running test
