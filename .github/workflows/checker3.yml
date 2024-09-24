@@ -1,7 +1,7 @@
 name: next.js Application
 on:
   push:
-    branches: master 
+    branches: main
 jobs:
   nextjs_Application:
     runs-on: ubuntu-latest
